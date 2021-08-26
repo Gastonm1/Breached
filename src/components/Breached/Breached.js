@@ -15,6 +15,8 @@ import { Grid } from "../Results/ResultStyle";
 import Results from "../Results/Results";
 
 const Breached = ({ showBreached, setShowBreached }) => {
+  const API_KEY = process.env.API_KEY;
+
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("@gmail.com");
   const [search, setSearch] = useState("");
@@ -31,8 +33,7 @@ const Breached = ({ showBreached, setShowBreached }) => {
         method: "GET",
         headers: {
           "x-rapidapi-host": "breachdirectory.p.rapidapi.com",
-          "x-rapidapi-key":
-            "7c7b17def1msh6daf3cfdf9aa73cp1734f5jsn0db3f11479c2",
+          "x-rapidapi-key": API_KEY,
         },
       }
     );
