@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Background,
   BreachedWrapper,
@@ -15,10 +16,10 @@ import { Grid } from "../Results/ResultStyle";
 import Results from "../Results/Results";
 
 const Breached = ({ showBreached, setShowBreached }) => {
-  const API_KEY = process.env.API_KEY;
+  const API_KEY = process.env.REACT_APP_KEY;
 
   const [data, setData] = useState([]);
-  const [query, setQuery] = useState("@gmail.com");
+  const [query, setQuery] = useState("someone@example.com");
   const [search, setSearch] = useState("");
 
   useEffect(() => {
