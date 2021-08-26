@@ -48,6 +48,7 @@ export const BreachedContent = styled.div`
     background: #141414;
     color: #fff;
     border: none;
+    border-radius: 12px;
   }
 `;
 

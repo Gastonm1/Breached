@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Background,
   BreachedWrapper,
@@ -11,8 +11,46 @@ import {
   SearchIcon,
   SearchInput,
 } from "./BreachedStlyes";
+import { Grid } from "../Results/ResultStyle";
+import Results from "../Results/Results";
 
 const Breached = ({ showBreached, setShowBreached }) => {
+  const [data, setData] = useState([]);
+  const [query, setQuery] = useState("@gmail.com");
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    console.log("Effect has been run");
+    getData();
+  }, [query]);
+
+  const getData = async () => {
+    const response = await fetch(
+      `https://breachdirectory.p.rapidapi.com/?func=auto&term=${query}`,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-host": "breachdirectory.p.rapidapi.com",
+          "x-rapidapi-key":
+            "7c7b17def1msh6daf3cfdf9aa73cp1734f5jsn0db3f11479c2",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+    setData(data);
+  };
+
+  const updateSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const getSearch = (e) => {
+    e.preventDefault();
+    setQuery(search);
+    setSearch("");
+  };
+
   return (
     <>
       {showBreached ? (
@@ -29,7 +67,12 @@ const Breached = ({ showBreached, setShowBreached }) => {
                 check.
               </p>
               <SearchSection>
-                <Form action="/" method="GET" role="search">
+                <Form
+                  action="/"
+                  method="GET"
+                  role="search"
+                  onSubmit={getSearch}
+                >
                   <Search>
                     <SearchIcon>
                       <svg
@@ -40,11 +83,26 @@ const Breached = ({ showBreached, setShowBreached }) => {
                         <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                       </svg>
                     </SearchIcon>
-                    <SearchInput type="text" />
+                    <SearchInput
+                      type="text"
+                      value={search}
+                      onChange={updateSearch}
+                      placeholder="someone@example.com"
+                    />
                   </Search>
                 </Form>
               </SearchSection>
-              <button>Search Me.</button>
+              <Grid>
+                {data.result.map((result) => (
+                  <Results
+                    key={result.has_password}
+                    hasPass={result.has_password}
+                    password={result.password}
+                    source={result.sources[0]}
+                  ></Results>
+                ))}
+              </Grid>
+              <button type="submit">Search</button>
             </BreachedContent>
             <CloseBreachButton
               aria-label="Close"
